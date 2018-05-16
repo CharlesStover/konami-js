@@ -1,11 +1,11 @@
-# konami.js
-Konami.js is a JavaScript object that allows web developers to implement the Konami code on their webpages. By pressing up, up, down, down, left, right, left, right, B, A, Enter, one or more custom JavaScript functions will execute.
+# Konami.ES6
+Konami.ES6 is an ES6 JavaScript instance that allows web developers to implement the Konami code on their webpages. By pressing up, up, down, down, left, right, left, right, B, A, Enter, one or more custom JavaScript functions will execute.
 
 ## Examples
 
 ### Adding an Event Listener
 ```JS
-import Konami from 'konami.js';
+import Konami from 'konami.es6';
 Konami.add(() => {
   alert('This will alert every time the Konami code is entered!');
 });
@@ -13,7 +13,7 @@ Konami.add(() => {
 
 ### Adding a Single-Execution Event Listener
 ```JS
-import Konami from 'konami.js';
+import Konami from 'konami.es6';
 Konami.add((unsubscribe) => {
   unsubscribe(); // Unsubscribes the listener from future Konami code entries.
   alert('This will only alert the first time the Konami code is entered!');
@@ -22,7 +22,7 @@ Konami.add((unsubscribe) => {
 
 ### Removing an Event Listener
 ```JS
-import Konami from 'konami.js';
+import Konami from 'konami.es6';
 const id = Konami.add(() => {
   alert('This will not alert, because it will have been removed.');
 });
