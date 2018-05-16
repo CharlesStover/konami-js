@@ -47,6 +47,11 @@ var konami = {
   // the last keys entered by the user
   entered: [],
 
+  // Options for the window key down event listener.
+  eventListenerOptions: {
+    passive: true
+  },
+
   // Queue of functions (set by addEvent) to execute once the Konami code has been entered.
   events: [],
 
@@ -80,4 +85,4 @@ var konami = {
 konami.onWindowKeyDown = konami.onWindowKeyDown.bind(konami);
 
 // Bind the event listener.
-window.addEventListener('keydown', konami.onWindowKeyDown);
+window.addEventListener('keydown', konami.onWindowKeyDown, konami.eventListenerOptions);
