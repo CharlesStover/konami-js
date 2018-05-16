@@ -1,5 +1,5 @@
 # Konami.js
-Konami.js is an ES6 JavaScript instance that allows web developers to implement the Konami code on their webpages. By pressing up, up, down, down, left, right, left, right, B, A, Enter, one or more custom JavaScript functions will execute.
+Konami.js is an ES6 JavaScript instance that allows web developers to implement the Konami code on their web pages. By pressing up, up, down, down, left, right, left, right, B, A, Enter, one or more custom JavaScript functions will execute.
 
 ## Examples
 
