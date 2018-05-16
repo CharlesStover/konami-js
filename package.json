@@ -1,0 +1,22 @@
+{
+  "name": "konami.js",
+  "version": "1.0.0",
+  "description": "Konami.js is a JavaScript object that allows web developers to implement the Konami code on their webpages. By pressing up, up, down, down, left, right, left, right, B, A, Enter, one or more custom JavaScript functions will execute.",
+  "main": "konami.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GamingMedley/konami.js.git"
+  },
+  "keywords": [
+    "konami"
+  ],
+  "author": "Charles Stover",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/GamingMedley/konami.js/issues"
+  },
+  "homepage": "https://github.com/GamingMedley/konami.js#readme"
+}

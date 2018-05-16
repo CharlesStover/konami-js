@@ -1,21 +1,38 @@
-// konami.js (C) 2016-2018 Charles Stover
+// konami.js (C) 2018 Charles Stover
 // www.charlesstover.com
 // up, up, down, down, left, right, left, right, B, A, Start
-var konami = {
 
-  // Add a function to the queue to execute once the Konami code has been entered.
-  addEvent: function(f) {
-    this.events.push(f);
-    return this.events.length - 1;
-  },
+const EVENT_LISTENER_OPTIONS = {
+  passive: true
+};
 
-  // Check to see if the user's string of keys matches the Konami code.
-  check: function() {
+const KONAMI_CODE = [ 38, 38, 40, 40, 37, 39, 37, 39, 66, 65, 13 ];
+const KONAMI_CODE_LENGTH = KONAMI_CODE.length;
+
+class Konami {
+
+  constructor() {
+    this.entered = [];
+    this.events = new Map();
+    this.lastId = 0;
+    this._onWindowKeyDown = this._onWindowKeyDown.bind(this);
+  }
+
+  add(f) {
+    this.lastId++;
+    const id = this.lastId.toString();
+    this.events.set(id, f);
+    if (this.events.size === 1) {
+      window.addEventListener('keydown', this._onWindowKeyDown, EVENT_LISTENER_OPTIONS);
+    }
+    return id;
+  }
+
+  get isValid() {
 
     // For each character in the Konami code,
-    var codeLength = this.code.length;
-    var enteredLength = this.entered.length;
-    for (var x = 0; x < codeLength; x++) {
+    const enteredLength = this.entered.length;
+    for (let x = 0; x < KONAMI_CODE_LENGTH; x++) {
 
       // If they haven't even entered this many characters, then they can't have entered the full code.
       if (enteredLength <= x) {
@@ -27,62 +44,53 @@ var konami = {
       "up, up, down, down, left, up" becomes just "up" as the user attempts to start the code over.
       "up, up, down, down, left, D" becomes nothing as the user is no longer entering the Konami code.
       */
-      if (this.entered[x] != this.code[x]) {
-        this.entered =
-          this.entered[x] == this.code[0] ?
-            [ this.code[0] ] :
-            [];
+      if (this.entered[x] !== KONAMI_CODE[x]) {
+        this.entered.splice(
+          0,
+          this.entered.length -
+          (
+            this.entered[x] === KONAMI_CODE[0] ?
+              1 :
+              0
+          )
+        );
         return false;
       }
     }
 
     // If we haven't returned an error yet, then the code was accurate in its entirety. Reset and validate it.
-    this.entered = [];
+    this.entered.splice(0, this.entered.length);
     return true;
-  },
+  }
 
-  // the Konami code itself
-  code: [ 38, 38, 40, 40, 37, 39, 37, 39, 66, 65, 13 ],
-
-  // the last keys entered by the user
-  entered: [],
-
-  // Options for the window key down event listener.
-  eventListenerOptions: {
-    passive: true
-  },
-
-  // Queue of functions (set by addEvent) to execute once the Konami code has been entered.
-  events: [],
-
-  // Event listener for the Konami code key presses.
-  onWindowKeyDown: function(e) {
+  _onWindowKeyDown({ keyCode }) {
 
     // Log the key press.
-    this.entered.push(e.keyCode);
+    this.entered.push(keyCode);
   
     // If the last entered keys equate to the Konami code,
-    if (this.check()) {
+    if (this.isValid) {
       console.log('Konami Code Activated');
   
       // Execute each function in the queue.
-      var eventsLength = this.events.length;
-      for (var x = 0; x < eventsLength; x++) {
-        if (typeof this.events[x] === 'function') {
-          this.events[x](x);
-        }
+      for (const [ id, event ] of this.events) {
+        event(() => {
+          this.remove(id);
+        });
       }
     }
-  },
+  }
 
-  // Remove a function from the queue.
-  removeEvent: function(i) {
-    this.events[i] = null;
+  remove(id) {
+    if (!this.events.has(id)) {
+      return false;
+    }
+    this.events.delete(id);
+    if (this.events.size === 0) {
+      window.removeEventListener('keydown', this._onWindowKeyDown, EVENT_LISTENER_OPTIONS);
+    }
     return true;
   }
 };
 
-konami.onWindowKeyDown = konami.onWindowKeyDown.bind(konami);
-
-// Bind the event listener.
-window.addEventListener('keydown', konami.onWindowKeyDown, konami.eventListenerOptions);
+export default new Konami();
