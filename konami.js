@@ -1,21 +1,24 @@
 // konami.js (C) 2018 Charles Stover
 // www.charlesstover.com
-// up, up, down, down, left, right, left, right, B, A, Start
 
 const EVENT_LISTENER_OPTIONS = {
   passive: true
 };
 
+// up, up, down, down, left, right, left, right, B, A, Start
 const KONAMI_CODE = [ 38, 38, 40, 40, 37, 39, 37, 39, 66, 65, 13 ];
-const KONAMI_CODE_LENGTH = KONAMI_CODE.length;
 
-class Konami {
+export class Konami {
 
-  constructor() {
+  constructor(...args) {
+    this.code =
+      Array.isArray(args[0]) ?
+        args[0] :
+        KONAMI_CODE;
     this.entered = [];
     this.events = new Map();
     this.lastId = 0;
-    this._onWindowKeyDown = this._onWindowKeyDown.bind(this);
+    this.windowKeyDownHandler = this.windowKeyDownHandler.bind(this);
   }
 
   add(f) {
@@ -23,7 +26,7 @@ class Konami {
     const id = this.lastId.toString();
     this.events.set(id, f);
     if (this.events.size === 1) {
-      window.addEventListener('keydown', this._onWindowKeyDown, EVENT_LISTENER_OPTIONS);
+      window.addEventListener('keydown', this.windowKeyDownHandler, EVENT_LISTENER_OPTIONS);
     }
     return id;
   }
@@ -31,8 +34,9 @@ class Konami {
   get isValid() {
 
     // For each character in the Konami code,
+    const codeLength = this.code.length;
     const enteredLength = this.entered.length;
-    for (let x = 0; x < KONAMI_CODE_LENGTH; x++) {
+    for (let x = 0; x < codeLength; x++) {
 
       // If they haven't even entered this many characters, then they can't have entered the full code.
       if (enteredLength <= x) {
@@ -44,12 +48,12 @@ class Konami {
       "up, up, down, down, left, up" becomes just "up" as the user attempts to start the code over.
       "up, up, down, down, left, D" becomes nothing as the user is no longer entering the Konami code.
       */
-      if (this.entered[x] !== KONAMI_CODE[x]) {
+      if (this.entered[x] !== this.code[x]) {
         this.entered.splice(
           0,
           this.entered.length -
           (
-            this.entered[x] === KONAMI_CODE[0] ?
+            this.entered[x] === this.code[0] ?
               1 :
               0
           )
@@ -63,7 +67,18 @@ class Konami {
     return true;
   }
 
-  _onWindowKeyDown({ keyCode }) {
+  remove(id) {
+    if (!this.events.has(id)) {
+      return false;
+    }
+    this.events.delete(id);
+    if (this.events.size === 0) {
+      window.removeEventListener('keydown', this.windowKeyDownHandler, EVENT_LISTENER_OPTIONS);
+    }
+    return true;
+  }
+
+  windowKeyDownHandler({ keyCode }) {
 
     // Log the key press.
     this.entered.push(keyCode);
@@ -79,17 +94,6 @@ class Konami {
         });
       }
     }
-  }
-
-  remove(id) {
-    if (!this.events.has(id)) {
-      return false;
-    }
-    this.events.delete(id);
-    if (this.events.size === 0) {
-      window.removeEventListener('keydown', this._onWindowKeyDown, EVENT_LISTENER_OPTIONS);
-    }
-    return true;
   }
 };
 
