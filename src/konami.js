@@ -9,88 +9,94 @@ const EVENT_LISTENER_OPTIONS = {
 const KONAMI_CODE = [ 38, 38, 40, 40, 37, 39, 37, 39, 66, 65, 13 ];
 const KONAMI_CODE_LENGTH = KONAMI_CODE.length;
 
-class Konami {
+const entered = [];
 
-  constructor() {
-    this.entered = [];
-    this.events = new Map();
-    this.lastId = 0;
-    this._onWindowKeyDown = this._onWindowKeyDown.bind(this);
+const events = new Map();
+
+let lastId = 0;
+
+const add = (f) => {
+  lastId++;
+  const id = lastId.toString();
+  events.set(id, f);
+  if (events.size === 1) {
+    window.addEventListener('keydown', onWindowKeyDown, EVENT_LISTENER_OPTIONS);
   }
+  return id;
+};
 
-  add(f) {
-    this.lastId++;
-    const id = this.lastId.toString();
-    this.events.set(id, f);
-    if (this.events.size === 1) {
-      window.addEventListener('keydown', this._onWindowKeyDown, EVENT_LISTENER_OPTIONS);
-    }
-    return id;
-  }
+const isValid = () => {
 
-  get isValid() {
+  // For each character in the Konami code,
+  const enteredLength = entered.length;
+  for (let x = 0; x < KONAMI_CODE_LENGTH; x++) {
 
-    // For each character in the Konami code,
-    const enteredLength = this.entered.length;
-    for (let x = 0; x < KONAMI_CODE_LENGTH; x++) {
-
-      // If they haven't even entered this many characters, then they can't have entered the full code.
-      if (enteredLength <= x) {
-        return false;
-      }
-
-      /*
-      If this character in the Konami code does not match, remove all entries up to this point.
-      "up, up, down, down, left, up" becomes just "up" as the user attempts to start the code over.
-      "up, up, down, down, left, D" becomes nothing as the user is no longer entering the Konami code.
-      */
-      if (this.entered[x] !== KONAMI_CODE[x]) {
-        this.entered.splice(
-          0,
-          this.entered.length -
-          (
-            this.entered[x] === KONAMI_CODE[0] ?
-              1 :
-              0
-          )
-        );
-        return false;
-      }
-    }
-
-    // If we haven't returned an error yet, then the code was accurate in its entirety. Reset and validate it.
-    this.entered.splice(0, this.entered.length);
-    return true;
-  }
-
-  _onWindowKeyDown({ keyCode }) {
-
-    // Log the key press.
-    this.entered.push(keyCode);
-  
-    // If the last entered keys equate to the Konami code,
-    if (this.isValid) {
-      console.log('Konami Code Activated');
-  
-      // Execute each function in the queue.
-      for (const [ id, event ] of this.events) {
-        event(() => {
-          this.remove(id);
-        });
-      }
-    }
-  }
-
-  remove(id) {
-    if (!this.events.has(id)) {
+    // If they haven't even entered this many characters, then they can't have entered the full code.
+    if (enteredLength <= x) {
       return false;
     }
-    this.events.delete(id);
-    if (this.events.size === 0) {
-      window.removeEventListener('keydown', this._onWindowKeyDown, EVENT_LISTENER_OPTIONS);
+
+    /*
+    If this character in the Konami code does not match, remove all entries up to this point.
+    "up, up, down, down, left, up" becomes just "up" as the user attempts to start the code over.
+    "up, up, down, down, left, D" becomes nothing as the user is no longer entering the Konami code.
+    */
+    if (entered[x] !== KONAMI_CODE[x]) {
+      entered.splice(
+        0,
+        entered.length -
+        (
+          entered[x] === KONAMI_CODE[0] ?
+            1 :
+            0
+        )
+      );
+      return false;
     }
-    return true;
+  }
+
+  // If we haven't returned an error yet, then the code was accurate in its entirety. Reset and validate it.
+  entered.splice(0, entered.length);
+  return true;
+};
+
+const onWindowKeyDown = ({ keyCode }) => {
+
+  // Log the key press.
+  entered.push(keyCode);
+
+  // If the last entered keys equate to the Konami code,
+  if (isValid()) {
+
+    // Execute each function in the queue.
+    for (const [ id, event ] of events) {
+      event(() => {
+        remove(id);
+      });
+    }
   }
 };
 
-export default new Konami();
+const remove = (id) => {
+  if (!events.has(id)) {
+    return false;
+  }
+  events.delete(id);
+  if (events.size === 0) {
+    window.removeEventListener('keydown', onWindowKeyDown, EVENT_LISTENER_OPTIONS);
+  }
+  return true;
+};
+
+const methods = Object.assign(
+  Object.create(null),
+  { add, remove }
+);
+
+const Konami = Object.assign(
+  Object.create(null),
+  methods,
+  { default: methods }
+);
+
+module.exports = Konami;
