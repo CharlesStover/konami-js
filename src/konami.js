@@ -22,7 +22,7 @@ const add = (f) => {
   if (events.size === 1) {
     window.addEventListener('keydown', onWindowKeyDown, EVENT_LISTENER_OPTIONS);
   }
-  return id;
+  return () => remove(id);
 };
 
 const isValid = () => {

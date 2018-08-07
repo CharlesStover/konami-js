@@ -36,10 +36,10 @@ Konami.add(function(unsubscribe) {
 ```JS
 <script type="text/javascript" src="https://gamingmedley.com/konami.js"></script>
 <script type="text/javascript">
-var id = Konami.add(function() {
+var unsubscribe = Konami.add(function() {
   alert('This will not alert, because it will have been removed.');
 });
-Konami.remove(id);
+unsubscribe();
 </script>
 ```
 
@@ -69,10 +69,10 @@ Konami.add((unsubscribe) => {
 #### Removing an Event Listener
 ```JS
 import Konami from '@gamingmedley/konami.js';
-const id = Konami.add(() => {
+const unsubscribe = Konami.add(() => {
   alert('This will not alert, because it will have been removed.');
 });
-Konami.remove(id);
+unsubscribe();
 ```
 
 ## Methods
@@ -80,7 +80,7 @@ Konami.remove(id);
 * ### add
   Queues a function to be executed when the Konami code is entered by the user.
 
-  Returns a unique ID of the event, which can be used with `remove` to disable the associated function from executing in future uses of the Konami code.
+  Returns an unsubscribe function. When executed, the unsubscribe function will disable the associated function from executing in future uses of the Konami code.
 
   #### Parameters
   * `function e`: The function to be executed when the Konami code is entered by the user. An unsubscribe function is passed as a parameter to it.

@@ -2,8 +2,8 @@ require('./mutate-window')(window);
 const Konami = require('../konami');
 
 describe('@gamingmedley/konami.js', () => {
-  let eventListener = null;
   let success = false;
+  let unsubscribe = null;
 
   it('should start with no event listeners', () => {
     if (window.onKeyDownListeners.length > 0) {
@@ -12,14 +12,14 @@ describe('@gamingmedley/konami.js', () => {
   });
 
   it('should add event listeners', () => {
-    eventListener = Konami.add(() => {});
+    unsubscribe = Konami.add(() => {});
     if (window.onKeyDownListeners.length !== 1) {
       throw new Error('more/less than 1 listeners exist');
     }
   });
 
   it('should remove event listeners', () => {
-    if (Konami.remove(eventListener) === false) {
+    if (unsubscribe() === false) {
       throw new Error('did not remove event listener');
     }
     if (window.onKeyDownListeners.length > 0) {
@@ -33,7 +33,7 @@ describe('@gamingmedley/konami.js', () => {
     }
   });
 
-  it('should add multiple event listeners', () => {
+  it('should add multiple Konami listeners with a single window listener', () => {
     Konami.add(() => {});
     Konami.add(() => {});
     if (window.onKeyDownListeners.length !== 1) {
