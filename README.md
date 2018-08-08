@@ -1,11 +1,11 @@
 # Konami.js
 Konami.js is a JavaScript package that allows web developers to implement an event listener for the Konami code on their web pages. By pressing up, up, down, down, left, right, left, right, B, A, Enter, one or more custom JavaScript functions will execute.
 
-![package](https://img.shields.io/github/package-json/v/GamingMedley/konami.js.svg)
-![build](https://travis-ci.com/GamingMedley/konami.js.svg)
-![downloads](https://img.shields.io/npm/dt/@gamingmedley/konami.js.svg)
-![minified size](https://img.shields.io/bundlephobia/min/@gamingmedley/konami.js.svg)
-![minzipped size](https://img.shields.io/bundlephobia/minzip/@gamingmedley/konami.js.svg)
+[![package](https://img.shields.io/github/package-json/v/GamingMedley/konami.js.svg)](https://github.com/GamingMedley/konami.js)
+[![build](https://travis-ci.com/GamingMedley/konami.js.svg)](https://travis-ci.com/GamingMedley/konami.js)
+[![downloads](https://img.shields.io/npm/dt/@gamingmedley/konami.js.svg)](https://www.npmjs.com/package/@gamingmedley/konami.js)
+[![minified size](https://img.shields.io/bundlephobia/min/@gamingmedley/konami.js.svg)](https://www.npmjs.com/package/@gamingmedley/konami.js)
+[![minzipped size](https://img.shields.io/bundlephobia/minzip/@gamingmedley/konami.js.svg)](https://www.npmjs.com/package/@gamingmedley/konami.js)
 
 ## Examples
 
