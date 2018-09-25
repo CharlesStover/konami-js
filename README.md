@@ -9,40 +9,6 @@ Konami.js is a JavaScript package that allows web developers to implement an eve
 
 ## Examples
 
-### CommonJS/ES5
-
-#### Adding an Event Listener
-```JS
-<script type="text/javascript" src="https://gamingmedley.com/konami.js"></script>
-<script type="text/javascript">
-Konami.add(function() {
-  alert('This will alert every time the Konami code is entered.');
-});
-</script>
-```
-
-#### Adding a Single-Execution Event Listener
-```JS
-<script type="text/javascript" src="https://gamingmedley.com/konami.js"></script>
-<script type="text/javascript">
-Konami.add(function(unsubscribe) {
-  unsubscribe(); // Unsubscribes the listener from future Konami code entries.
-  alert('This will only alert the first time the Konami code is entered.');
-});
-</script>
-```
-
-#### Removing an Event Listener
-```JS
-<script type="text/javascript" src="https://gamingmedley.com/konami.js"></script>
-<script type="text/javascript">
-var unsubscribe = Konami.add(function() {
-  alert('This will not alert, because it will have been removed.');
-});
-unsubscribe();
-</script>
-```
-
 ### ES6
 
 #### Install
