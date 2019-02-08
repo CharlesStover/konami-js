@@ -1,8 +1,0 @@
-{
-  "files.exclude":{
-    ".git": true,
-    ".vscode": true,
-    "node_modules": true,
-    "konami.js": true
-  }
-}
