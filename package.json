@@ -1,11 +1,33 @@
 {
   "name": "@gamingmedley/konami.js",
-  "version": "1.0.2",
-  "author": "Charles Stover",
+  "version": "1.0.3",
+  "author": "Charles Stover <konami@charlesstover.com>",
   "bugs": {
+    "email" : "konami@charlesstover.com",
     "url": "https://github.com/GamingMedley/konami.js/issues"
   },
   "description": "Konami.ES6 is a JavaScript object that allows web developers to implement the Konami code on their webpages. By pressing up, up, down, down, left, right, left, right, B, A, Enter, one or more custom JavaScript functions will execute.",
+  "directories": {
+    "lib": "src",
+    "test": "tests"
+  },
+  "files": [
+    "konami.js",
+    "package.json"
+  ],
+  "homepage": "https://github.com/GamingMedley/konami.js#readme",
+  "keywords": [
+    "konami"
+  ],
+  "license": "MIT",
+  "main": "konami.js",
+  "repository": "github:GamingMedley/konami.js",
+  "scripts": {
+    "build": "webpack",
+    "prepublishOnly": "yarn build",
+    "test": "mocha --require jsdom-global/register tests/konami.spec.js"
+  },
+  "dependencies": { },
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.54",
     "@babel/preset-env": "^7.0.0-beta.54",
@@ -15,20 +37,5 @@
     "mocha": "^5.2.0",
     "webpack": "^4.16.1",
     "webpack-cli": "^3.1.0"
-  },
-  "homepage": "https://github.com/GamingMedley/konami.js#readme",
-  "keywords": [
-    "konami"
-  ],
-  "license": "MIT",
-  "main": "konami.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/GamingMedley/konami.js.git"
-  },
-  "scripts": {
-    "build": "webpack",
-    "prepublishOnly": "yarn build",
-    "test": "mocha --require jsdom-global/register tests/konami.spec.js"
   }
 }
